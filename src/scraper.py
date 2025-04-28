@@ -12,3 +12,10 @@ HEADERS = {
 }
 
 def scraper_page(url):
+    response = requests.get(url, headers=HEADERS)
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    offers = []
+
+    # Buscar todas las tarjetas de oferta
+    cards = soup.find_all("div", class_="oferta")
