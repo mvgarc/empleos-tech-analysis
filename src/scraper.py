@@ -11,7 +11,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
 }
 
-def scraper_page(url):
+def scrape_page(url):
     response = requests.get(url, headers=HEADERS)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -36,3 +36,14 @@ def scraper_page(url):
         offers.append(offer)
     
     return offers
+
+if __name__ == "__main__":
+    offers_data = []
+    
+    # Solo una página por ahora
+    offers_data.extend(scrape_page(BASE_URL))
+    
+    df = pd.DataFrame(offers_data)
+    df.to_csv("data/raw/ofertas_tecnoempleo.csv", index=False)
+    
+    print(f"Se extrajeron {len(df)} ofertas de empleo.")
