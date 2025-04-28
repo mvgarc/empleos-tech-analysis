@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 BASE_URL = "https://www.tecnoempleo.com/ofertas-trabajo/?te=data+analyst&pr=231"
 
@@ -19,8 +22,15 @@ def scrape_page(url):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     
     driver.get(url)
-    
-    time.sleep(5)  # Esperar que cargue la página
+
+# Esperar hasta que aparezcan las ofertas (máximo 15 segundos)
+try:
+    WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "oferta"))
+    )
+    print("Ofertas cargadas correctamente.")
+except:
+    print("No se encontraron ofertas después de esperar.")
     
     offers = []
     
