@@ -19,3 +19,20 @@ def scraper_page(url):
 
     # Buscar todas las tarjetas de oferta
     cards = soup.find_all("div", class_="oferta")
+
+    for card in cards:
+        title = card.find("h2", class_="titulo").text.strip() if card.find("h2", class_="titulo") else None
+        company = card.find("div", class_="nombre-empresa").text.strip() if card.find("div", class_="nombre-empresa") else None
+        location = card.find("div", class_="localidad").text.strip() if card.find("div", class_="localidad") else None
+        date = card.find("span", class_="fecha").text.strip() if card.find("span", class_="fecha") else None
+        
+        offer = {
+            "Título": title,
+            "Empresa": company,
+            "Ubicación": location,
+            "Fecha de publicación": date,
+        }
+
+        offers.append(offer)
+    
+    return offers
